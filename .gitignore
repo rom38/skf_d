@@ -1,0 +1,7 @@
+.venv
+.vscode
+tg_bot.ini
+/*.html
+dump.rdb
+__pycache__
+c56_bot.ini
