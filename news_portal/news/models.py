@@ -1,12 +1,28 @@
-from operator import mod
-from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class Author(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    auth_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    auth_rating = models.IntegerField(default=0)
+
+    def update_rating(self):
+        post_rating_q = self.post_set.aggregate(post_r=models.Sum('rating'))
+        post_rating = 0
+        post_rating += post_rating_q.get('post_r')
+
+        comm_rating_q = self.auth_user.comment_set.aggregate(comm_r=models.Sum('rating'))
+        comm_rating = 0
+        comm_rating += comm_rating_q.get('comm_r')
+
+        comm_auth_rating_q = self.post_set.comment_set.aggregate(comm_auth_r = models.Sum('rating'))
+        comm_auth_rating = 0
+        comm_auth_rating += comm_auth_rating_q.get('comm_auth_r')
+
+        self.auth_rating = post_rating*3+comm_rating+comm_auth_rating
+        self.save()
 
 
 class Category(models.Model):
@@ -28,15 +44,38 @@ class Post(models.Model):
     category = models.ManyToManyField('Category',
                through='Postcategory')
     head = models.CharField(max_length=128)
-    text = models.TextField()
-    rating = models.IntegerField()
+    text = models.TextField(default='')
+    rating = models.IntegerField(default=0)
+
+    def like(self):
+        self.rating += 1
+        self.save()
+
+    def dislike(self):
+        self.rating -= 1
+        self.save()
+
+    def preview(self):
+        if len(self.text) > 124:
+            return f"{self.text[:125]}..."
+        return f"{self.text}"
 
 
 class PostCategory(models.Model):
-    post = models.ForeignKey('Post', on_delete = models.CASCADE)
-    category = models.ForeignKey('Category', on_delete = models.CASCADE)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
 
 
 class Comment(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    rating = models.IntegerField(default=0)
 
+    def like(self):
+        self.rating += 1
+        self.save()
+
+    def dislike(self):
+        self.rating -= 1
+        self.save()
