@@ -17,7 +17,7 @@ class Author(models.Model):
         comm_rating = 0
         comm_rating += comm_rating_q.get('comm_r')
 
-        comm_auth_rating_q = self.post_set.comment_set.aggregate(comm_auth_r = models.Sum('rating'))
+        comm_auth_rating_q = Comment.objects.filter(post__author=self).aggregate(comm_auth_r=models.Sum('rating'))
         comm_auth_rating = 0
         comm_auth_rating += comm_auth_rating_q.get('comm_auth_r')
 
