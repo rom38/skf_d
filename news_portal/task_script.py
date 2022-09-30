@@ -8,6 +8,7 @@ django.setup()
 
 from news.models import *
 
+# удаление записей из базы данных
 con = sqlite3.connect("db.sqlite3")
 with con:
     con.execute("delete from auth_user where id>1")
@@ -114,10 +115,18 @@ bst_pdic = best_post_q.values('time_create',
                 'author__auth_user__username','rating','head')[0]
 
 print('Best article\n'
-      f'Create date: {bst_pdic["time_create"].date()}, '
+      f'  Create date: {bst_pdic["time_create"].date()}, '
       f'author username: {bst_pdic["author__auth_user__username"]}, '
       f'rating: {bst_pdic["rating"]}\n'
-      f'Article header: {bst_pdic["head"]}')
-print(f'Article preview: {best_post_q[0].preview()}')
+      f'  Article header: {bst_pdic["head"]}')
+print(f'  Article preview: {best_post_q[0].preview()}\n')
 
 # 11. Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+
+print('Comments to best article')
+for comm in Comment.objects.filter(post=best_post_q[0].id).values('time_create',
+                'user__username', 'rating', 'text'):
+    print(f'  Create date: {comm["time_create"].date()}, '
+        f'username: {comm["user__username"]}, '
+        f'rating: {comm["rating"]}, '
+        f'Comment text: {comm["text"]}')
