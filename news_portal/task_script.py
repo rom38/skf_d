@@ -8,7 +8,7 @@ django.setup()
 
 from news.models import *
 
-# удаление записей из базы данных
+# удаление записей из базы данных для чистоты эксперимента
 con = sqlite3.connect("db.sqlite3")
 with con:
     con.execute("delete from auth_user where id>1")
@@ -130,3 +130,14 @@ for comm in Comment.objects.filter(post=best_post_q[0].id).values('time_create',
         f'username: {comm["user__username"]}, '
         f'rating: {comm["rating"]}, '
         f'Comment text: {comm["text"]}')
+
+# удаление записей из базы данных для чистоты эксперимента
+con = sqlite3.connect("db.sqlite3")
+with con:
+    con.execute("delete from auth_user where id>1")
+    con.execute("delete from news_author")
+    con.execute("delete from news_category")
+    con.execute("delete from news_post")
+    con.execute("delete from news_comment")
+    con.execute("delete from news_postcategory")
+con.close()
