@@ -1,6 +1,6 @@
 from django.urls import path
 # Импортируем созданное нами представление
-from .views import ProductsList
+from .views import ProductsList, ProductDetail
 
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
    # а Django ожидает функцию, нам надо представить этот класс в виде view.
    # Для этого вызываем метод as_view.
    path('', ProductsList.as_view()),
+   path('<int:pk>', ProductDetail.as_view()),
 ]
