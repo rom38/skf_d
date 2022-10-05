@@ -40,7 +40,7 @@
     {% for neww in news %}
     <tr>
         <td><a href="/news/{{neww.id}}"> {{neww.id }}</a></td>
-        <td>{{ neww.head }}</td>
+        <td>{{ neww.head | censor | censor:"Sword"}}</td>
         <td>{{ neww.time_create | date:'d M Y'}}</td>
         <td>{{ neww.text|truncatechars:20 }}</td>
     </tr>
