@@ -26,6 +26,8 @@ def censor(value, code='wolf'):
     value: значение, к которому нужно применить фильтр
     """
     len_1 = len(code)-1
-    val_1 = value.replace(code, f'{code[0]}{len_1*"*"}')
+    code_1 = code.lower().title()
+    code_2 = code.lower()
+    val_1 = value.replace(code_1, f'{code_1[0]}{len_1*"*"}').replace(code_2, f'{code_2[0]}{len_1*"*"}')
 
     return val_1

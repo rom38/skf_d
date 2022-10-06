@@ -1,14 +1,12 @@
 <!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
 
-<!-- Название у нас будет Product -->
 {% block title %}
 Новость
 {% endblock title %}
 
 {% load custom_filters %}
 
-<!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->
 {% block content %}
 <h1>Новость</h1>
 <dl class="row">
@@ -19,7 +17,7 @@
     <dt class="col-sm-3">Заголовок:</dt>
     <dd class="col-sm-9">{{ neww.head | censor | censor:"Санитарным" |censor:"Sword"}}</dd>
     <dt class="col-sm-3">Содержание:</dt>
-    <dd class="col-sm-9">{{ neww.text | censor:"Санитарным"|censor:"lorem"}}</dd>
+    <dd class="col-sm-9">{{ neww.text | censor | censor:"Санитарным"|censor:"lorem"}}</dd>
     <dt class="col-sm-3">Категории:</dt>
     <dd class="col-sm-9">
         {% for cat in neww.category.all %}
