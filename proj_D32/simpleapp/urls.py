@@ -1,6 +1,6 @@
 from django.urls import path
 # Импортируем созданное нами представление
-from .views import ProductsList, ProductDetail
+from .views import ProductsList, ProductDetail, multiply
 
 
 urlpatterns = [
@@ -12,4 +12,5 @@ urlpatterns = [
    # Для этого вызываем метод as_view.
    path('', ProductsList.as_view()),
    path('<int:pk>', ProductDetail.as_view()),
+   path('multiply/', multiply),
 ]

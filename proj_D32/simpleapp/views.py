@@ -1,10 +1,22 @@
 from datetime import datetime
+
 from django.shortcuts import render
-
-
+from django.http import HttpResponse
 # Create your views here.
 from django.views.generic import ListView, DetailView
 from .models import Product
+
+def multiply(request):
+    number = request.GET.get('number')
+    multiplier = request.GET.get('multiplier')
+
+    try:
+        result = int(number) * int(multiplier)
+        html = f"<html><body>{number}*{multiplier}={result}</body></html>"
+    except (ValueError, TypeError):
+        html = f"<html><body>Invalid input.</body></html>"
+
+    return HttpResponse(html)
 
 
 class ProductsList(ListView):
