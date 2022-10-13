@@ -1,10 +1,14 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 
 # Create your views here.
-from django.views.generic import ListView, DetailView
+from django.views.generic import (
+            ListView, DetailView,
+            CreateView, UpdateView, DeleteView)
 
 from .models import Post
 from .filters import PostFilter
+from .forms import PostForm
 
 
 class NewsSearch(ListView):
@@ -76,3 +80,24 @@ class NewsDetail(DetailView):
     model = Post
     template_name = 'neww.html'
     context_object_name = 'neww'
+
+
+class PostCreate(CreateView):
+    # Указываем нашу разработанную форму
+    form_class = PostForm
+    # модель товаров
+    model = Post
+    # и новый шаблон, в котором используется форма.
+    template_name = 'post_edit.html'
+
+
+class PostUpdate(UpdateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'post_edit.html'
+
+
+class PostDelete(DeleteView):
+    model = Post
+    template_name = 'post_delete.html'
+    success_url = reverse_lazy('news_list')
