@@ -5,7 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Bare - Start Bootstrap Template</title>
+        <title>
+            {% block title %}
+            Default
+            {% endblock title %}
+        </title>
 
         {% load static %}
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -30,6 +34,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/news/">Новости</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/news/search/">Поиск новостей</a>
                         </li>
 
                     </ul>
