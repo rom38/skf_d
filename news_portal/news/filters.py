@@ -21,5 +21,6 @@ class PostFilter(FilterSet):
         fields = {
             # поиск по названию
             'head': ['icontains'],
+            'post_type': ['exact'],
             'category': ['exact'],
         }

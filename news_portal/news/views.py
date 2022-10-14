@@ -58,8 +58,8 @@ class NewsList(ListView):
     # Отфильтровываем из статей и новостей только новости
     paginate_by = 10
 
-    def get_queryset(self):
-        return super().get_queryset().filter(post_type=Post.news)
+    # def get_queryset(self):
+    #     return super().get_queryset().filter(post_type=Post.news)
 
     def get_context_data(self, **kwargs):
         # С помощью super() мы обращаемся к родительским классам

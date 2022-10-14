@@ -14,6 +14,8 @@
     <dd class="col-sm-9">{{ neww.author.auth_user.username }}</dd>
     <dt class="col-sm-3">Дата создания:</dt>
     <dd class="col-sm-9">{{ neww.time_create | date:'d M Y' }}</dd>
+    <dt class="col-sm-3">Тип:</dt>
+    <dd class="col-sm-9">{{ neww.get_post_type_display }}</dd>
     <dt class="col-sm-3">Заголовок:</dt>
     <dd class="col-sm-9">{{ neww.head | censor | censor:"Санитарным" |censor:"Sword"}}</dd>
     <dt class="col-sm-3">Содержание:</dt>

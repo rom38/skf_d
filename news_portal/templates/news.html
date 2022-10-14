@@ -30,6 +30,7 @@
 <table class="table">
     <tr>
         <th>ID</th>
+        <th>Тип</th>
         <th>Заголовок</th>
         <th>Дата публикации</th>
         <th>Текст</th>
@@ -39,6 +40,7 @@
     {% for neww in news %}
     <tr>
         <td><a href="/news/{{neww.id}}"> {{neww.id }}</a></td>
+        <td>{{ neww.get_post_type_display}}</td>
         <td>{{ neww.head | censor | censor:"Sword"}}</td>
         <td>{{ neww.time_create | date:'d M Y'}}</td>
         <td>{{ neww.text|truncatechars:20 }}</td>
@@ -74,6 +76,8 @@
     <!-- Если новостей нет, говорим, что новостей нет ;) -->
     <h2>Новостей нет!</h2>
 {% endif %}
-
-
+<p></p>
+<div>
+<a href="create/" class="btn btn-primary">Create news</a>
+</div>
 {% endblock content %}
