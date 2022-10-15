@@ -3,9 +3,16 @@ from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponse
 # Create your views here.
-from django.views.generic import ListView, DetailView
+from django.views.generic import (
+    ListView, DetailView, CreateView, UpdateView, DeleteView
+)
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+
 from .models import Product
 from .filters import ProductFilter
+from .forms import ProductForm
+
 
 def multiply(request):
     number = request.GET.get('number')
@@ -62,3 +69,25 @@ class ProductDetail(DetailView):
     template_name = 'product.html'
     # Название объекта, в котором будет выбранный пользователем продукт
     context_object_name = 'product'
+
+
+class ProductCreate(LoginRequiredMixin, CreateView):
+    # Указываем нашу разработанную форму
+    form_class = ProductForm
+    # модель товаров
+    model = Product
+    # и новый шаблон, в котором используется форма.
+    template_name = 'product_edit.html'
+    raise_exception = True
+
+# Добавляем представление для изменения товара.
+class ProductUpdate(UpdateView):
+    form_class = ProductForm
+    model = Product
+    template_name = 'product_edit.html'
+
+
+class ProductDelete(DeleteView):
+    model = Product
+    template_name = 'product_delete.html'
+    success_url = reverse_lazy('product_list')
