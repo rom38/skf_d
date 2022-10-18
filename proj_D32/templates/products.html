@@ -43,6 +43,10 @@ Products
         <td>Категория</td>
         <td>Цена</td>
         <td>Количество</td>
+        {# Условие получается составным. #}
+        {% if perms.simpleapp.change_product or perms.simpleapp.delete_product %}
+        <td>Действия</td>
+        {% endif %}
     </tr>
 
     <!-- Для каждого товара будете генерироваться новая строчка,
@@ -62,6 +66,15 @@ Products
         <td>{{ product.category.name }}</td>
         <td>{{ product.price|currency:"usd" }}</td>
         <td>{{ product.quantity }}</td>
+        <td>
+            {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
+            {% if perms.simpleapp.change_product %}
+            <a href="{% url 'product_update' pk=product.id %}">Изменить</a>
+            {% endif %}
+            {% if perms.simpleapp.delete_product %}
+            <a href="{% url 'product_delete' product.id %}">Удалить</a>
+            {% endif %}
+        </td>
     </tr>
     {% endfor %}
 
