@@ -142,7 +142,7 @@ STATICFILES_DIRS = [
 ]
 
 
-# LOGIN_REDIRECT_URL = "/products"
+LOGIN_REDIRECT_URL = "/products"
 
 SITE_ID = 1
 
