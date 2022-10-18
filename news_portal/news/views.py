@@ -5,6 +5,9 @@ from django.urls import reverse_lazy
 from django.views.generic import (
             ListView, DetailView,
             CreateView, UpdateView, DeleteView)
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
 
 from .models import Post
 from .filters import PostFilter
@@ -82,22 +85,27 @@ class NewsDetail(DetailView):
     context_object_name = 'neww'
 
 
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     # Указываем нашу разработанную форму
     form_class = PostForm
+    permission_required = ('news.add_post',)
     # модель товаров
     model = Post
     # и новый шаблон, в котором используется форма.
     template_name = 'post_edit.html'
+    # raise_exception = True
 
 
-class PostUpdate(UpdateView):
+
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.update_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
 
-class PostDelete(DeleteView):
+class PostDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.update_post',)
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('news_list')
