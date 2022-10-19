@@ -26,6 +26,10 @@
         {{cat.name}},
         {% endfor %}</dd>
 </dl>
+{% if perms.news.delete_post %}
 <a href="{{ neww.id }}/delete/" class="btn btn-danger">Delete</a>
+{% endif %}
+{% if perms.news.change_post %}
 <a href="{{ neww.id }}/update/" class="btn btn-primary">Update</a>
+{% endif %}
 {% endblock content %}

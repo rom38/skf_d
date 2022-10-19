@@ -97,15 +97,15 @@ class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
 
 
 
-class PostUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = ('news.update_post',)
+class PostUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     form_class = PostForm
+    permission_required = ('news.change_post',)
     model = Post
     template_name = 'post_edit.html'
 
 
-class PostDelete(PermissionRequiredMixin, DeleteView):
-    permission_required = ('news.update_post',)
+class PostDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post',)
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('news_list')

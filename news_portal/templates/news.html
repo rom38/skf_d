@@ -78,6 +78,8 @@
 {% endif %}
 <p></p>
 <div>
+{% if perms.news.add_post %}
 <a href="create/" class="btn btn-primary">Create news</a>
+{% endif %}
 </div>
 {% endblock content %}
