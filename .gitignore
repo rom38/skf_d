@@ -1,5 +1,6 @@
 .venv
 .vscode
+.env
 tg_bot.ini
 /*.html
 dump.rdb

@@ -9,6 +9,10 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import os
+
+from dotenv import load_dotenv
+load_dotenv()  # loads the configs from .env
 
 from pathlib import Path
 
@@ -39,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'simpleapp',
     'django_filters',
+    'appointment',
 
     'django.contrib.sites',
     'allauth',
@@ -151,6 +156,24 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
+
+# адрес сервера Яндекс-почты для всех один и тот же
+EMAIL_HOST = 'smtp.yandex.ru'
+# порт smtp сервера тоже одинаковый
+EMAIL_PORT = 465
+# ваше имя пользователя, например, если ваша почта user@yandex.ru,
+# то сюда надо писать user, иными словами, это всё то что идёт до собаки
+EMAIL_HOST_USER = 'irk-gp@yandex.ru'
+# пароль от почты
+EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_HOST_PASSWORD'))
+# Яндекс использует ssl, подробнее о том, что это, почитайте
+# в дополнительных источниках, но включать его здесь обязательно
+EMAIL_USE_SSL = True
+# Яндекс считает мои письма спамом
+# Mail.ru не нравятся заголовки
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

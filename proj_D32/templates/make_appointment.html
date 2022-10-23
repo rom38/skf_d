@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<h1>Уведомление</h1>
+<hr>
+<form action="{% url 'make_appointment' %}" method="post">
+    {% csrf_token %}
+    <label for="client_name">Имя клиента</label>
+    <input type="text" name="client_name"></input>
+    <label for="message">Сообщение</label>
+    <input type="text" name="message"></input>
+    <label for="date">Дата</label>
+    <input type="date" name="date"></input>
+
+    <input type="submit" class="btn "/>
+</form>
+{% endblock content %}
