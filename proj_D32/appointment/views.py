@@ -1,8 +1,9 @@
 from datetime import datetime
-
+from django.dispatch import receiver
 from django.shortcuts import render, reverse, redirect
 from django.views import View
 from django.core.mail import send_mail
+
 
 from .models import Appointment
 
@@ -19,21 +20,21 @@ class AppointmentView(View):
         )
         appointment.save()
 
-        # отправляем письмо
-        send_mail(
-            # имя клиента и дата записи будут в теме для удобства
-            subject=(
-                f'{appointment.client_name} '
-                f'{appointment.date.strftime("%Y-%M-%d")}'),
-            # сообщение с кратким описанием проблемы
-            message=appointment.message,
-            # здесь указываете почту, с которой будете
-            # отправлять (об этом попозже)
-            from_email='irk-gp@yandex.ru',
-            # здесь список получателей. Например,
-            # секретарь, сам врач и т. д.
-            recipient_list=['rik@iokpb1.ru']
-            # 'irk-gp@yandex.ru'
-        )
+        # # отправляем письмо
+        # send_mail(
+        #     # имя клиента и дата записи будут в теме для удобства
+        #     subject=(
+        #         f'{appointment.client_name} '
+        #         f'{appointment.date.strftime("%Y-%M-%d")}'),
+        #     # сообщение с кратким описанием проблемы
+        #     message=appointment.message,
+        #     # здесь указываете почту, с которой будете
+        #     # отправлять (об этом попозже)
+        #     from_email='irk-gp@yandex.ru',
+        #     # здесь список получателей. Например,
+        #     # секретарь, сам врач и т. д.
+        #     recipient_list=['rik@iokpb1.ru']
+        #     # 'irk-gp@yandex.ru'
+        # )
 
         return redirect('make_appointment')
