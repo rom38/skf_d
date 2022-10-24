@@ -43,13 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'simpleapp',
     'django_filters',
-    'appointment',
+    # 'appointment',
 
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+
+    'appointment.apps.AppointmentConfig',
 ]
 
 MIDDLEWARE = [
@@ -177,3 +179,9 @@ EMAIL_USE_SSL = True
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+
+MANAGERS = [
+    ('Papik', 'rik@iokpb1.ru'),
+    # список всех менеджеров в формате ('имя', 'их почта')
+]
