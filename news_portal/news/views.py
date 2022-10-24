@@ -109,3 +109,8 @@ class PostDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('news_list')
+
+
+class CategoryNewsList(ListView):
+    model = Post
+    template_name = 'post_edit.html'

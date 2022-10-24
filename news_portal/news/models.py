@@ -28,8 +28,10 @@ class Author(models.Model):
     def __str__(self):
         return f'Author: {self.auth_user.username}'
 
+
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User, related_name='categories')
 
     def __str__(self):
         return str(self.name)

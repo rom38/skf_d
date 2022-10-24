@@ -2,7 +2,7 @@ from django.urls import path
 # Импортируем созданное нами представление
 from .views import (
    NewsList, NewsDetail, NewsSearch,
-   PostCreate, PostUpdate, PostDelete)
+   PostCreate, PostUpdate, PostDelete, CategoryNewsList)
 
 
 urlpatterns = [
@@ -18,4 +18,5 @@ urlpatterns = [
    path('create/', PostCreate.as_view(), name='news_create'),
    path('<int:pk>/update/', PostUpdate.as_view(), name='news_create'),
    path('<int:pk>/delete/', PostDelete.as_view(), name='news_delete'),
+   path('categories/<int:pk>', CategoryNewsList.as_view(), name='categories'),
 ]
