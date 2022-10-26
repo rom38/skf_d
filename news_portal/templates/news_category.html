@@ -2,7 +2,7 @@
 {% extends 'flatpages/default.html' %}
 
 {% block title %}
-Новости
+Новости категории
 {% endblock title %}
 
 {% load custom_filters %}
@@ -12,7 +12,7 @@
 
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
-<h1>Все посты</h1>
+<h1>Все посты категории {{category}}</h1>
    <!-- Используем переданную из представления переменную time_now
    и применяем к ней фильтр date. По назначению этот фильтр очень похож
    на метод strftime у объекта datetime в Python — вывод времени
@@ -26,7 +26,10 @@
 
    <hr>
 <!-- Выводим новости, только если они есть с помощью тега if -->
-{% if news %}
+{% if news_category %}
+{% if is_not_subscriber %}
+        <p class="text-center"><a href="{% url 'news_subscribe' category.id %}" class="btn btn-secondary btn-sm">Подписаться на категорию</a></p>
+{% endif %}
 <table class="table">
     <tr>
         <th>ID</th>
@@ -35,11 +38,10 @@
         <th>Дата публикации</th>
         <th>Текст</th>
         <th>Категории</th>
-
     </tr>
 
 
-    {% for neww in news %}
+    {% for neww in news_category %}
     <tr>
         <td><a href="/news/{{neww.id}}"> {{neww.id }}</a></td>
         <td>{{ neww.get_post_type_display}}</td>
@@ -47,9 +49,10 @@
         <td>{{ neww.time_create | date:'d M Y'}}</td>
         <td>{{ neww.text|truncatechars:20 }}</td>
         <td>{% for category in neww.category.all %}
-            <a href="{% url 'news_category' category.id %}"> {{category}} </a>
-        {% endfor %}
+                {{category}}
+            {% endfor %}
         </td>
+
     </tr>
     {% endfor %}
 

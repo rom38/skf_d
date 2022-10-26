@@ -1,0 +1,22 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+        Подписка
+{% endblock title %}
+
+{% load custom_filters %}
+
+{% block content %}
+<h1>{{message}}</h1>
+
+
+
+{% if perms.news.delete_post %}
+<a href="{{ neww.id }}/delete/" class="btn btn-danger">Delete</a>
+{% endif %}
+{% if perms.news.change_post %}
+<a href="{{ neww.id }}/update/" class="btn btn-primary">Update</a>
+{% endif %}
+{% endblock content %}
+

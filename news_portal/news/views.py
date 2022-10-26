@@ -1,15 +1,16 @@
-from django.shortcuts import render
+from urllib import request
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 
 # Create your views here.
 from django.views.generic import (
             ListView, DetailView,
-            CreateView, UpdateView, DeleteView)
+            CreateView, UpdateView, DeleteView, View)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
-from .models import Post
+from .models import Category, Post
 from .filters import PostFilter
 from .forms import PostForm
 
@@ -113,4 +114,25 @@ class PostDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
 
 class CategoryNewsList(ListView):
     model = Post
-    template_name = 'post_edit.html'
+    template_name = 'news_category.html'
+    context_object_name = 'news_category'
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, id=self.kwargs['pk'])
+        return super().get_queryset().filter(category=self.category).order_by('-time_create')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
+        context['category'] = self.category
+        return context
+
+
+class Subscribe(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        user = request.user
+        category = Category.objects.get(id=pk)
+        category.subscribers.add(user)
+        message = 'Вы успешно подписались на категорию'
+        return render(request, 'news_subscribe.html', {'category': category,
+                                                       'message': message})
