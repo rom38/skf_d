@@ -32,7 +32,7 @@ def my_job():
     # subscribers
     print(subscribers)
     html_content = render_to_string(
-        'news_notify_daily.html', {
+        'news_notify_weekly.html', {
             # 'link': f'{SITE_URL}/news/{pk}',
             'link': SITE_URL,
             'posts': posts,
@@ -82,9 +82,11 @@ class Command(BaseCommand):
 
         scheduler.add_job(
             delete_old_job_executions,
+            # Каждую неделю будут удаляться старые задачи,
+            # которые либо не удалось выполнить, либо уже выполнять не надо.
             trigger=CronTrigger(
                 day_of_week="mon", hour="00", minute="00"
-            ),  # Каждую неделю будут удаляться старые задачи, которые либо не удалось выполнить, либо уже выполнять не надо.
+            ),
             id="delete_old_job_executions",
             max_instances=1,
             replace_existing=True,
