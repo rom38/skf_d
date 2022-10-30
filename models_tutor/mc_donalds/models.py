@@ -11,7 +11,7 @@ class Order(models.Model):
     cost = models.FloatField(default = 0.0)
     pickup = models.BooleanField(default = False)
     complete = models.BooleanField(default = False)
-    stuff = models.ForeignKey('Stuff', on_delete = models.CASCADE)
+    # stuff = models.ForeignKey('Stuff', on_delete = models.CASCADE)
 
     products = models.ManyToManyField('Product', through = 'ProductOrder')
 
@@ -32,6 +32,9 @@ class Order(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     price = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return self.name + "/" + str(self.price)
 
 
 class Stuff(models.Model):
