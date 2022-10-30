@@ -32,7 +32,7 @@
 {% endif %}
 <table class="table">
     <tr>
-        <th>ID</th>
+        <!-- <th>ID</th> -->
         <th>Тип</th>
         <th>Заголовок</th>
         <th>Дата публикации</th>
@@ -43,14 +43,14 @@
 
     {% for neww in news_category %}
     <tr>
-        <td><a href="/news/{{neww.id}}"> {{neww.id }}</a></td>
+        <!-- <td><a href="/news/{{neww.id}}"> {{neww.id }}</a></td> -->
         <td>{{ neww.get_post_type_display}}</td>
-        <td>{{ neww.head | censor | censor:"Sword"}}</td>
+        <td><a href="{% url 'news_detail' neww.id %}">{{ neww.head | censor | censor:"Sword"}}</a></td>
         <td>{{ neww.time_create | date:'d M Y'}}</td>
         <td>{{ neww.text|truncatechars:20 }}</td>
         <td>{% for category in neww.category.all %}
-                {{category}}
-            {% endfor %}
+            <a href="{% url 'news_category' category.id %}" class="btn btn-primary"> {{category}} </a>
+        {% endfor %}
         </td>
 
     </tr>

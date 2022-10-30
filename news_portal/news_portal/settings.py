@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-hfm&hwdufwfr9d0!#f_gvs!^0m5mt_%%m$3%#o57ea#)yiha&r'
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -168,7 +168,7 @@ EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 # ваше имя пользователя, например, если ваша почта user@yandex.ru,
 # то сюда надо писать user, иными словами, это всё то что идёт до собаки
-EMAIL_HOST_USER = 'irk-gp@yandex.ru'
+EMAIL_HOST_USER = str(os.getenv('EMAIL_HOST_USER'))
 # пароль от почты
 EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_HOST_PASSWORD'))
 # Яндекс использует ssl, подробнее о том, что это, почитайте
@@ -176,7 +176,7 @@ EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_HOST_PASSWORD'))
 EMAIL_USE_SSL = True
 # Яндекс считает мои письма спамом
 # Mail.ru не нравятся заголовки
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER

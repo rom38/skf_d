@@ -1,4 +1,3 @@
-from urllib import request
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 
@@ -97,7 +96,6 @@ class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     # raise_exception = True
 
 
-
 class PostUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     form_class = PostForm
     permission_required = ('news.change_post',)
@@ -119,7 +117,9 @@ class CategoryNewsList(ListView):
 
     def get_queryset(self):
         self.category = get_object_or_404(Category, id=self.kwargs['pk'])
-        return super().get_queryset().filter(category=self.category).order_by('-time_create')
+        return (super().get_queryset().
+                filter(category=self.category).
+                order_by('-time_create'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
