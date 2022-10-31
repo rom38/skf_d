@@ -4,7 +4,7 @@ from django.dispatch import receiver
 # from django.core.mail import EmailMultiAlternatives
 # from django.template.loader import render_to_string
 from .models import PostCategory
-from news_portal.settings import SITE_URL, DEFAULT_FROM_EMAIL
+# from news_portal.settings import SITE_URL, DEFAULT_FROM_EMAIL
 from .tasks import send_notify
 
 

@@ -49,7 +49,7 @@
         <td>{{ neww.time_create | date:'d M Y'}}</td>
         <td>{{ neww.text|truncatechars:20 }}</td>
         <td>{% for category in neww.category.all %}
-            <a href="{% url 'news_category' category.id %}" class="btn btn-primary"> {{category}} </a>
+            <a href="{% url 'news_category' category.id %}" class="btn btn-info"> {{category}} </a>
         {% endfor %}
         </td>
 
@@ -88,7 +88,7 @@
 <p></p>
 <div>
 {% if perms.news.add_post %}
-<a href="create/" class="btn btn-primary">Create news</a>
+<a href="{% url 'news_create' %}" class="btn btn-primary">Create news</a>
 {% endif %}
 </div>
 {% endblock content %}
