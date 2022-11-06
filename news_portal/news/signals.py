@@ -1,9 +1,11 @@
-from django.db.models.signals import m2m_changed
+from django.db.models.signals import m2m_changed, post_save
 # импортируем нужный декоратор
 from django.dispatch import receiver
+from django.core.cache import cache
+
 # from django.core.mail import EmailMultiAlternatives
 # from django.template.loader import render_to_string
-from .models import PostCategory
+from .models import PostCategory, Post
 # from news_portal.settings import SITE_URL, DEFAULT_FROM_EMAIL
 from .tasks import send_notify
 
@@ -36,3 +38,9 @@ def notify_new_post(sender, instance, **kwargs):
         subscribers = [ittem.email for ittem in subscribers]
         send_notify.delay(instance.preview(),
                     instance.pk, instance.head, subscribers)
+
+@receiver(post_save, sender=Post)
+def del_post_from_cache(sender, instance, created, **kwargs):
+    if created:
+        return
+    cache.delete(f'post-{instance.pk}')
