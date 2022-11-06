@@ -85,7 +85,12 @@
 <p></p>
 <div>
 {% if perms.news.add_post %}
-<a href="{% url 'news_create' %}" class="btn btn-primary">Create news</a>
+    {% if author_user %}
+        <a href="{% url 'news_create' %}" class="btn btn-primary">Написать новость</a>
+    {% endif %}
+    {% if not author_user %}
+        <a href="{% url 'new_author' %}" class="btn btn-primary">Стать автором</a>
+    {% endif %}
 {% endif %}
 </div>
 {% endblock content %}

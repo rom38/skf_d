@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.cache import cache
 
-from .models import Category, Post
+from .models import Category, Post, Author
 from .filters import PostFilter
 from .forms import PostForm
 
@@ -75,6 +75,10 @@ class NewsList(ListView):
         # Добавим ещё одну пустую переменную,
         # чтобы на её примере рассмотреть работу ещё одного фильтра.
         # context['next_sale'] = None
+        user = self.request.user
+        context['author_user'] = False
+        if not user.is_anonymous and Author.objects.filter(auth_user=user).exists():
+            context['author_user'] = True
         context['next_sale'] = "Распродажа в среду!"
         return context
 
@@ -106,6 +110,10 @@ class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     # и новый шаблон, в котором используется форма.
     template_name = 'post_edit.html'
     # raise_exception = True
+
+    def form_valid(self, form):
+        form.instance.author = Author.objects.get(auth_user=self.request.user)
+        return super().form_valid(form)
 
 
 class PostUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
@@ -148,3 +156,12 @@ class Subscribe(LoginRequiredMixin, View):
         message = 'Вы успешно подписались на категорию'
         return render(request, 'news_subscribe.html', {'category': category,
                                                        'message': message})
+
+
+class BeAuthor(LoginRequiredMixin, View):
+    def get(self, request):
+        user = request.user
+        new_author = Author.objects.create(auth_user=user)
+        message = 'Вы успешно стали автором'
+        return render(request, 'new_author.html', {'message': message})
+
