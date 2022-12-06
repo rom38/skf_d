@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 
+from pathlib import Path
+
 from dotenv import load_dotenv
 load_dotenv()  # loads the configs from .env
-
-from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,9 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -188,10 +189,13 @@ MANAGERS = [
 
 SITE_URL = 'http://127.0.0.1:8000'
 
-# формат даты, которую будет воспринимать наш задачник (вспоминаем модуль по фильтрам)
+# формат даты, которую будет воспринимать наш задачник
+# (вспоминаем модуль по фильтрам)
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 
-# если задача не выполняется за 25 секунд, то она автоматически снимается, можете поставить время побольше, но как правило, это сильно бьёт по производительности сервера
+# если задача не выполняется за 25 секунд, то она автоматически снимается,
+# можете поставить время побольше, но как правило, это сильно бьёт по
+# производительности сервера
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
 
 CELERY_BROKER_URL = 'redis://localhost:6379'
@@ -213,47 +217,167 @@ CACHES = {
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'style' : '{',
     'formatters': {
-        'simple': {
-            'format': '{levelname} {message}'
+        'fmt_cons_debug': {
+            'format': '{asctime} {levelname} {message}',
+            'style': '{',
         },
-        'cons_debug': {
-            'format': '{asctime} {levelname} {message}'
+        'fmt_cons_warn': {
+            'format': '{asctime} {levelname} {message} {pathname}',
+            'style': '{',
         },
-        'cons_warn': {
-            'format': '{asctime} {levelname} {pathname} {message}'
+        'fmt_cons_err': {
+            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+            'style': '{',
+        },
+        'fmt_file_info': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'style': '{',
+        },
+        'fmt_file_err': {
+            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+            'style': '{',
+        },
+        'fmt_file_secur': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'style': '{',
+        },
+        'fmt_mail_err': {
+            'format': '{asctime} {levelname} {message} {pathname}',
+            'style': '{',
         },
     },
     'filters': {
         'require_debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
         },
-        'require_debug_False': {
+        'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse',
         },
     },
     'handlers': {
-        'console': {
-            'level': 'INFO',
+        'hnd_cons_debug': {
+            'level': 'DEBUG',
             'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
-            'formatter': 'simple'
+            'formatter': 'fmt_cons_debug'
         },
-        'mail_admins': {
+        'hnd_cons_warn': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'fmt_cons_warn'
+        },
+        'hnd_cons_err': {
             'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler'
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'fmt_cons_err'
+        },
+        'hnd_file_info': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'formatter': 'fmt_file_info',
+            'filename': 'general.log'
+        },
+        'hnd_file_err': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            # formatter same for console 'ERROR' and 'errors.log' file
+            'formatter': 'fmt_file_err',
+            'filename': 'errors.log'
+        },
+        'hnd_file_secur': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            # formatter same for 'general.log' and 'security.log' file
+            'formatter': 'fmt_file_secur',
+            'filename': 'security.log'
+        },
+        'hnd_mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'fmt_mail_err',
         }
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
+            'handlers': [
+                'hnd_cons_debug',
+                'hnd_cons_warn',
+                'hnd_cons_err',
+                'hnd_file_info'
+                ],
+            'level': 'DEBUG',
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['hnd_file_err', 'hnd_mail_admins'],
             'level': 'ERROR',
             'propagate': False,
-        }
+        },
+        'django.server': {
+            'handlers': ['hnd_file_err', 'hnd_mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.template': {
+            'handlers': ['hnd_file_err'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['hnd_file_err'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['hnd_file_secur'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'news': {
+            'handlers': [
+                'hnd_cons_debug',
+                'hnd_cons_warn',
+                'hnd_cons_err',
+                'hnd_file_info'
+                ],
+            'level': 'DEBUG',
+        },
     }
+}
+
+LOGGING_TEST = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'fmt_cons_debug': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'hnd_cons_debug': {
+            'level': 'DEBUG',
+            #'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'fmt_cons_debug'
+        },
+        'hnd_file_info': {
+            'level': 'INFO',
+            #'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'formatter': 'fmt_cons_debug',
+            'filename': 'general.log'
+        },
+    },
+    'loggers': {
+        'news': {
+            'handlers': ['hnd_cons_debug','hnd_file_info'],
+            'level': 'DEBUG',
+        },
+    },
 }

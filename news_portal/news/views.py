@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 
@@ -13,6 +15,8 @@ from .models import Category, Post, Author
 from .filters import PostFilter
 from .forms import PostForm
 
+logger = logging.getLogger(__name__)
+print('name of app', __name__)
 
 class NewsSearch(ListView):
     model = Post
@@ -27,6 +31,7 @@ class NewsSearch(ListView):
     paginate_by = 10
 
     def get_queryset(self):
+        logger.info("Info from view listview ")
         # Получаем обычный запрос
         queryset = super().get_queryset()
         # Используем наш класс фильтрации.
@@ -65,6 +70,8 @@ class NewsList(ListView):
     #     return super().get_queryset().filter(post_type=Post.news)
 
     def get_context_data(self, **kwargs):
+        # test logger
+        logger.warning("Warning from view listview ")
         # С помощью super() мы обращаемся к родительским классам
         # и вызываем у них метод get_context_data с теми же аргументами,
         # что и были переданы нам.
@@ -164,4 +171,3 @@ class BeAuthor(LoginRequiredMixin, View):
         new_author = Author.objects.create(auth_user=user)
         message = 'Вы успешно стали автором'
         return render(request, 'new_author.html', {'message': message})
-

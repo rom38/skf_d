@@ -1,0 +1,17 @@
+2022-12-06 05:39:16,716 WARNING views Warning from view listview
+2022-12-06 05:39:46,160 WARNING views Warning from view listview 
+2022-12-06 05:48:53,393 INFO autoreload Watching for file changes with StatReloader
+2022-12-06 05:49:40,998 INFO autoreload /home/vsc/skf_d/news_portal/news_portal/settings.py changed, reloading.
+2022-12-06 05:49:43,779 INFO autoreload Watching for file changes with StatReloader
+2022-12-06 05:49:47,327 WARNING views Warning from view listview 
+2022-12-06 05:49:48,876 WARNING views Warning from view listview 
+2022-12-06 05:52:08,189 INFO autoreload /home/vsc/skf_d/news_portal/news_portal/settings.py changed, reloading.
+2022-12-06 05:52:10,834 INFO autoreload Watching for file changes with StatReloader
+2022-12-06 05:54:57,566 INFO autoreload /home/vsc/skf_d/news_portal/news_portal/settings.py changed, reloading.
+2022-12-06 05:55:00,720 INFO autoreload Watching for file changes with StatReloader
+2022-12-06 05:58:02,656 INFO autoreload /home/vsc/skf_d/news_portal/news_portal/settings.py changed, reloading.
+2022-12-06 05:58:05,544 INFO autoreload Watching for file changes with StatReloader
+2022-12-06 05:59:05,199 INFO autoreload /home/vsc/skf_d/news_portal/news_portal/settings.py changed, reloading.
+2022-12-06 05:59:07,603 INFO autoreload Watching for file changes with StatReloader
+2022-12-06 06:03:19,535 INFO autoreload /home/vsc/skf_d/news_portal/news/views.py changed, reloading.
+2022-12-06 06:03:22,300 INFO autoreload Watching for file changes with StatReloader
